@@ -1,13 +1,14 @@
 function paintModel() {
   plane()
-  for (let i = 0, len = 4; i < len; i++) {
-    let tree = new MODEL.Tree(scene, i)
-    let x = i*5 - len/2 *5
-    tree.setPos(x, 0, 0).scale(1, 1, 1).rotate(0,0,0).shadow().paint()
+  for (let i = 0, len = 200; i < len; i++) {
+    let tree = new MODEL.Tree(scene, {
+      type: ~~(Math.random()*4)
+    })
+    let x = Math.random()* 100 - 50
+    let z = Math.random()* 100 - 50
+    let scale = Math.random()  + 0.2
+    tree.setPos(x, 0, z).scale(scale, scale, scale)
   }
-  // let tree = new MODEL.Tree(scene, 3)
-  // let scale = 3
-  // tree.scale(scale, scale, scale).paint()
 }
 
 function plane() {

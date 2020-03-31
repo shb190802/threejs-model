@@ -5,7 +5,11 @@
 import Base from './Base';
 
 class Tree extends Base {
-  constructor(scene, type = 1) {
+  constructor(scene, {
+    type = 1,
+    shadow = true,
+    paint = true
+  }) {
     super(scene)
     this.materialLeaf = new THREE.MeshLambertMaterial({
       color: 0x00ff00,
@@ -24,6 +28,12 @@ class Tree extends Base {
       this.designCircle2()
     } else {
       this.design()
+    }
+    if(shadow) {
+      this.shadow()
+    }
+    if(paint) {
+      this.paint()
     }
   }
   // 方块树

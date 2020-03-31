@@ -155,10 +155,15 @@ var Tree =
 function (_Base) {
   _inherits(Tree, _Base);
 
-  function Tree(scene) {
+  function Tree(scene, _ref) {
     var _this;
 
-    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    var _ref$type = _ref.type,
+        type = _ref$type === void 0 ? 1 : _ref$type,
+        _ref$shadow = _ref.shadow,
+        shadow = _ref$shadow === void 0 ? true : _ref$shadow,
+        _ref$paint = _ref.paint,
+        paint = _ref$paint === void 0 ? true : _ref$paint;
 
     _classCallCheck(this, Tree);
 
@@ -180,6 +185,14 @@ function (_Base) {
       _this.designCircle2();
     } else {
       _this.design();
+    }
+
+    if (shadow) {
+      _this.shadow();
+    }
+
+    if (paint) {
+      _this.paint();
     }
 
     return _this;
@@ -247,8 +260,140 @@ function (_Base) {
   return Tree;
 }(Base);
 
+var Road =
+/*#__PURE__*/
+function (_Base) {
+  _inherits(Road, _Base);
+
+  function Road(scene) {
+    var _this;
+
+    var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    var width = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 4;
+    var len = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 8;
+
+    _classCallCheck(this, Road);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Road).call(this, scene));
+    _this.width = width;
+    _this.len = len;
+    _this.materialBase = new THREE.MeshLambertMaterial({
+      color: 0x68696c
+    });
+    _this.materialSide = new THREE.MeshLambertMaterial({
+      color: 0xe5e8ed
+    });
+    _this.materialWhite = new THREE.MeshLambertMaterial({
+      color: 0xe5e8ed
+    });
+    _this.materialWhite = new THREE.MeshLambertMaterial({
+      color: 0xe5e8ed
+    });
+
+    if (type === 0) {
+      _this.design();
+    }
+
+    return _this;
+  } // 默认公路
+
+
+  _createClass(Road, [{
+    key: "design",
+    value: function design() {
+      var main = new THREE.Mesh(new THREE.BoxGeometry(this.width, 0.1, this.len), this.materialBase);
+      main.position.y = 0.05;
+      this.group.add(main);
+    }
+    /**
+     * 公路两边辅路
+     * @param {*} width 
+     * @param {*} type left right 
+     */
+
+  }, {
+    key: "side",
+    value: function side() {
+      var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      var type = arguments.length > 1 ? arguments[1] : undefined;
+      var side = new THREE.Mesh(new THREE.BoxGeometry(width, 0.12, this.len), this.materialSide);
+      side.position.y = 0.06;
+      this.group.add(side);
+
+      if (type === 'left') {
+        side.position.x = -(this.width + width) / 2;
+      } else if (type === 'right') {
+        side.position.x = (this.width + width) / 2;
+      } else {
+        side.position.x = -(this.width + width) / 2;
+        var otherSide = side.clone();
+        otherSide.position.x = (this.width + width) / 2;
+        this.group.add(otherSide);
+      }
+
+      return this;
+    }
+    /**
+     * 非机动车道
+     */
+
+  }, {
+    key: "bicycle",
+    value: function bicycle() {
+      var width = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0.5;
+
+      // 公路宽度小于4米，无非机动车道
+      if (this.width < 4) {
+        return this;
+      }
+
+      var side = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.102, this.len), this.materialWhite);
+      side.position.y = 0.051;
+      side.position.x = -(this.width / 2 - width);
+      var otherSide = side.clone();
+      otherSide.position.x = this.width / 2 - width;
+      this.group.add(side);
+      this.group.add(otherSide);
+      return this;
+    }
+    /**
+     * 道路添加分道线
+     * @param {*} num 分道线数量 中心默认为1 之后每+1 两边同时加 1条线为单虚线
+     * @param {*} warnning // warnning 中心线为黄色双实线
+     */
+
+  }, {
+    key: "lane",
+    value: function lane() {
+      var _double = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+      var line = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.102, this.len), this.materialWhite);
+      line.position.y = 0.051;
+      line.position.x = _double ? 0 : 0.2;
+      this.group.add(line);
+
+      if (_double) {
+        var otherline = line.clone();
+        otherline.position.x = -0.2;
+        this.group.add(otherline);
+      }
+
+      return this;
+    }
+    /**
+     * 路口是否需要人行横道
+     */
+
+  }, {
+    key: "sidewalk",
+    value: function sidewalk() {}
+  }]);
+
+  return Road;
+}(Base);
+
 var index = {
-  Tree: Tree
+  Tree: Tree,
+  Road: Road
 };
 
 export default index;

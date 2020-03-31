@@ -1,9 +1,9 @@
 {
   "name": "threejs-model",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "./dist/threejs-model.js",
-  "module": "./dist/threejs-model-es.js",
+  "module": "./dist/threejs-model-esm.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c rollup.config.js",

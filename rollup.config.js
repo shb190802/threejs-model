@@ -7,8 +7,8 @@ module.exports = {
     format: 'umd',
     name: 'MODEL'
   },{
-    file: './dist/threejs-model-es.js',
-    format: 'es'
+    file: './dist/threejs-model-esm.js',
+    format: 'esm'
   }],
   plugins: [babel({
     exclude: '**/node_modules/**'
